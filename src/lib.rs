@@ -1,8 +1,18 @@
+use std::sync::Arc;
+
+pub use alloy_primitives;
+pub use clap;
+pub use eyre;
 pub use futures::{Future, TryStreamExt};
+pub use reth;
+pub use reth::providers::Chain;
 pub use reth_exex::{ExExContext, ExExEvent, ExExNotification};
 pub use reth_node_api::FullNodeComponents;
+pub use reth_node_api::{FullNodeTypes, NodeTypes};
 pub use reth_node_ethereum::EthereumNode;
 pub use reth_tracing::tracing::info;
+
+pub type Blockchain = Arc<Chain<<<EthereumNode as FullNodeTypes>::Types as NodeTypes>::Primitives>>;
 
 #[macro_export]
 macro_rules! exex {
