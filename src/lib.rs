@@ -5,6 +5,8 @@ pub use clap;
 pub use eyre;
 pub use futures::{Future, TryStreamExt};
 pub use reth;
+pub use reth::primitives::EthPrimitives;
+pub use reth::primitives::NodePrimitives;
 pub use reth::providers::Chain;
 pub use reth_exex::{ExExContext, ExExEvent, ExExNotification};
 pub use reth_node_api::FullNodeComponents;
@@ -12,7 +14,7 @@ pub use reth_node_api::{FullNodeTypes, NodeTypes};
 pub use reth_node_ethereum::EthereumNode;
 pub use reth_tracing::tracing::info;
 
-pub type Blockchain = Arc<Chain<<<EthereumNode as FullNodeTypes>::Types as NodeTypes>::Primitives>>;
+pub type Blockchain<N> = Arc<Chain<N>>;
 
 #[macro_export]
 macro_rules! exex {
@@ -31,15 +33,15 @@ macro_rules! exex {
                 match &notification {
                     ExExNotification::ChainCommitted { new } => {
                         info!(committed_chain = ?new.range(), "Received commit");
-                        $on_new(new).await
+                        $on_new(new).await?
                     }
                     ExExNotification::ChainReorged { old, new } => {
                         info!(from_chain = ?old.range(), to_chain = ?new.range(), "Received reorg");
-                        $on_reorg(old, new).await
+                        $on_reorg(old, new).await?
                     }
                     ExExNotification::ChainReverted { old } => {
                         info!(reverted_chain = ?old.range(), "Received revert");
-                        $on_revert(old).await
+                        $on_revert(old).await?
                     }
                 };
 
