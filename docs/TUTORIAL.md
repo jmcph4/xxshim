@@ -1,6 +1,6 @@
 # xxshim Tutorial #
 
-In this tutorial, we're going to write an xxshim that displays the addresses of all new smart contract deployments to Ethereum.
+In this tutorial, we're going to write an xxshim that displays the transaction hashes of all new smart contract deployments to Ethereum.
 
 ## Setting up ##
 
@@ -39,7 +39,7 @@ Let's consider our first hook, which handles the case of a new block becoming ca
 
  1. Retrieve all of the transactions in this new block
  2. Filter out the ones that are *not* contract creations
- 3. Print the newly-created contract addresses from the transactions that remain
+ 3. Print their hashes to standard output
 
 Let's stub these out:
 
